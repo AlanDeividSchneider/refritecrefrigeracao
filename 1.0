@@ -1,0 +1,454 @@
+Refritec refrigeração versão 1.0
+
+---------------------------------------------------------------------------------------------------------------
+
+Index
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Refritec Refrigeração</title>
+    <style type="text/css">
+        body {
+        background-image: url(logo.jpeg);
+        background-position-x: center;
+        background-position-y: center;
+        }
+    </style>
+</head>
+<body>
+    <form action="" method="post" id="formulario">
+        <h1 style="color: black;">Refrigeração Refritec</h1>
+        <a href="Adicionar.php">
+            <input type="button" value="Adicionar registros">
+        </a> <br><br>
+        <a href="Consultar.html">
+            <input type="button" value="Consultar registros">
+        </a> <br><br>
+        <a href="Alterar.html">
+            <input type="button" value="Alterar registros">
+        </a> <br><br>
+        <div id="versao" style="color: black;">
+            Versão 1.0
+        </div>
+    </form>
+</body>
+</html>
+
+-------------------------------------------------------------------------------------------------------------------
+
+Adicionar
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Refritec Refrigeração</title>
+    <style type="text/css">
+        body {
+        background-image: url(logo.jpeg);
+        background-position-x: center;
+        background-position-y: center;
+        }
+    </style>
+</head>
+<body>
+    <form action="IncluiBD.php" method="post" id="formulario">
+        <h1 style="color: black;">Registros:</h1>
+        <label for="nome">Nome do cliente:</label> <input type="text"  name="nome" maxlength="60" required placeholder="Digite aqui"> <br><br>
+        <label for="data1">Data do serviço prestado:</label> <input type="date" name="data1" required> <br><br>
+        <label for="desc1">Descrição do serviço:</label> <input type="text" name="desc1" maxlength="200" required placeholder="Digite aqui"> <br><br>
+        <label for="pecas">Peças substituidas:</label> <input type="text" name="pecas" maxlength="80" required placeholder="Digite aqui"> <br><br>
+        <label for="valor">Valor cobrado:</label> <input type="number" name="valor" maxlength="12" required placeholder="Digite aqui"> <br><br>
+        <strong style="color: black;">Endereço do cliente: </strong> <br><br>
+        <label for="cidade">Cidade:</label> <input type="text" name="cidade" maxlength="20" required placeholder="Digite aqui"> <br><br>
+        <label for="bairro">Bairro:</label> <input type="text" name="bairro" maxlength="20" required placeholder="Digite aqui"> <br><br>
+        <label for="rua">Rua:</label> <input type="text" name="rua" maxlength="30" required placeholder="Digite aqui"> <br><br>
+        <label for="numero">Número:</label> <input type="number" name="numero" maxlength="12" required placeholder="Digite aqui"> <br><br>
+        <label for="comp">Complemento:</label> <input type="text" name="comp" maxlength="12" required placeholder="Digite aqui"> <br><br>
+        <?php
+        $strcon = mysqli_connect('localhost', 'root', '', 'bdrefri') or die('Erro ao conectar ao banco de dados');
+
+        $resul = mysqli_query($strcon, "SELECT MAX(cod_serv) as cod_serv FROM registros") or die("Erro na consulta");
+
+        $row = $resul->fetch_assoc();
+        $ultimocod = $row['cod_serv'];
+        $codigo = $ultimocod + 1;
+        echo "<strong style='color: black;'> Código: $codigo  </styron><br><br>";
+        ?><a href="Index.html">
+        <input type="button" value="Voltar"></a>
+        <input type="submit" value="Salvar">
+        
+    </form>
+</body>
+</html>
+
+--------------------------------------------------------------------------------------------------------------------
+
+AlteraBD
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Refritec Refrigeração</title>
+    <style type="text/css">
+        body {
+        background-image: url(logo.jpeg);
+        background-position-x: center;
+        background-position-y: center;
+        }
+    </style>
+</head>
+<body>
+    <form action="" method="post" id="formulario">
+
+<?php
+session_start();
+$alter = $_SESSION['altera'];
+$nome = $_POST['nome'];
+$data1 = $_POST['data1'];
+$desc1 = $_POST['desc1'];
+$pecas = $_POST['pecas'];
+$valor = $_POST['valor'];
+$cidade = $_POST['cidade'];
+$bairro = $_POST['bairro'];
+$rua = $_POST['rua'];
+$numero = $_POST['numero'];
+$comp = $_POST['comp'];
+
+$strcon = mysqli_connect('localhost', 'root', '', 'bdrefri') or die('Erro ao conectar ao banco de dados');
+
+mysqli_query($strcon, "UPDATE registros SET nome_cliente = '$nome', data_serv = '$data1', desc_serv = '$desc1', pecas_sub = '$pecas', valor_cobrado = '$valor', cidade = '$cidade', bairro = '$bairro', rua = '$rua', numero = '$numero', complemento = '$comp' WHERE cod_serv = $alter") or die("Erro ao alterar cadastras registro");
+echo "<strong style='color: black;'>Alterações realizadas com sucesso!</strong>";
+?>
+    <br><br>
+    <a href="Index.html">
+        <input type="button" value="Voltar ao menu"></a>
+    <a href="Alterar.html">
+        <input type="button" value="Realizar nova alteração">
+    </a>
+</form>
+</body>
+</html>
+
+---------------------------------------------------------------------------------------------------------------------------
+
+Alterar
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Refritec Refrigeração</title>
+    <style type="text/css">
+        body {
+        background-image: url(logo.jpeg);
+        background-position-x: center;
+        background-position-y: center;
+        }
+    </style>
+</head>
+<body>
+    <form action="ShowReg.php" method="post" id="formulario">
+    <h1 style="color: black;">Alterar registros:</h1>
+    <label for="altera">Digite o código que deseja alterar:</label>
+    <input type="text" name="altera" required> <br><br>
+    <a href="Index.html">
+    <input type="button" value="Voltar"></a>
+    <input type="submit" value="Alterar">
+    </form>    
+</body>
+</html>
+
+-------------------------------------------------------------------------------------------------------------------------
+
+ConsultaBD
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Refritec Refrigeração</title>
+    <style type="text/css">
+        body {
+        background-image: url(logo.jpeg);
+        background-position-x: center;
+        background-position-y: center;
+        }
+    </style>
+</head>
+<body>
+    <form action="" method="post" id="formulario">
+        <h1 style="color: black;">Resultado da consulta</h1>
+<?php 
+
+$consulta = $_POST['consulta'];
+
+$strcon = mysqli_connect('localhost', 'root', '', 'bdrefri') or die('Erro ao conectar ao banco de dados');
+
+$resul = mysqli_query($strcon, "SELECT MAX(cod_serv) as cod_serv FROM registros") or die("Erro na consulta");
+
+$row = $resul->fetch_assoc();
+$ultimocod = $row['cod_serv'];
+
+        if ($consulta <= $ultimocod && $consulta > 0) {
+            $strcon = mysqli_connect('localhost', 'root', '', 'bdrefri') or die('Erro ao conectar ao banco de dados');
+
+            $resul = mysqli_query($strcon, "SELECT * FROM registros WHERE cod_serv = $consulta") or die("Erro ao transmitir dados");
+
+            while (list($cod, $nome, $data, $desc1, $pecas, $valor, $cidade, $bairro, $rua, $numero, $comp) = mysqli_fetch_row($resul))
+
+            echo "Nome: $nome <br><br> Data: $data <br><br> Descrição do serviço: $desc1 <br><br> Peças substituidas: $pecas <br><br> Valor do serviço: $valor <br><br> Cidade: $cidade <br><br> Bairro: $bairro <br><br> Rua: $rua <br><br> Número: $numero <br><br> Complemento: $comp <br><br>";
+
+            $datasolo = mysqli_query($strcon, "SELECT data_serv FROM registros WHERE cod_serv = $consulta") or die("Erro ao consultar data");
+
+            echo "Código consultado: $consulta";
+        }
+        else {
+            echo "Código invalido! <br><br> Tente novamente!";
+        }
+
+
+?>
+    <br><br>
+    <a href="Index.html">
+        <input type="button" value="Voltar ao menu"></a>
+    <a href="Consultar.html">
+        <input type="button" value="Realizar nova consulta">
+    </a>
+</form>
+</body>
+</html>
+
+---------------------------------------------------------------------------------------------------------------------------
+
+Consultar
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Refritec Refrigeração</title>
+    <style type="text/css">
+        body {
+        background-image: url(logo.jpeg);
+        background-position-x: center;
+        background-position-y: center;
+        }
+    </style>
+</head>
+<body>
+    <form action="ConsultaBD.php" method="post" id="formulario">
+    <h1 style="color: black;">Consultar registros:</h1>
+    <label for="consulta">Digite o código que deseja consultar:</label>
+    <input type="number" name="consulta" required> <br><br>
+    <a href="Index.html">
+    <input type="button" value="Voltar"></a>
+    <input type="submit" value="Consultar">
+    </form>    
+</body>
+</html>
+
+---------------------------------------------------------------------------------------------------------------------------
+
+Inclui
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Refritec Refrigeração</title>
+    <style type="text/css">
+        body {
+        background-image: url(logo.jpeg);
+        background-position-x: center;
+        background-position-y: center;
+        }
+    </style>
+</head>
+<body>
+    <form action="" method="post" id="formulario">
+<?php
+
+$nome = $_POST['nome'];
+$data1 = $_POST['data1'];
+$desc1 = $_POST['desc1'];
+$pecas = $_POST['pecas'];
+$valor = $_POST['valor'];
+$cidade = $_POST['cidade'];
+$bairro = $_POST['bairro'];
+$rua = $_POST['rua'];
+$numero = $_POST['numero'];
+$comp = $_POST['comp'];
+
+$strcon = mysqli_connect('localhost', 'root', '', 'bdrefri') or die('Erro ao conectar ao banco de dados');
+
+$sql= "INSERT INTO registros (nome_cliente, data_serv, desc_serv, pecas_sub, valor_cobrado, cidade, bairro, rua, numero, complemento) VALUES";
+$sql .= "('$nome', '$data1', '$desc1', '$pecas', '$valor', '$cidade', '$bairro', '$rua', '$numero', '$comp')";
+mysqli_query($strcon,$sql) or die("Erro ao tentar cadastras registro");
+mysqli_close($strcon);
+echo "<strong style='color: black;'>Cadastro realizado com sucesso!</strong>"
+?>
+    <br><br>
+    <a href="Index.html">
+        <input type="button" value="Voltar ao menu"></a>
+    <a href="Adicionar.php">
+        <input type="button" value="Realizar novo cadastro">
+    </a>
+    </form>
+    
+    
+</body>
+</html>
+
+
+---------------------------------------------------------------------------------------------------------------------------
+
+NewReg
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Refritec Refrigeração</title>
+    <style type="text/css">
+        body {
+        background-image: url(logo.jpeg);
+        background-position-x: center;
+        background-position-y: center;
+        }
+    </style>
+</head>
+<body>
+    <form action="AlteraBD.php" method="post" id="formulario">
+    <h1 style="color: black;">Alterações</h1>
+        <label for="nome">Nome do cliente:</label> <input type="text" name="nome" maxlength="60" placeholder="Digite aqui" required> <br><br>
+        <label for="data1">Data do serviço prestado:</label> <input type="date" name="data1" required> <br><br>
+        <label for="desc1">Descrição do serviço:</label> <input type="text" name="desc1" maxlength="200" placeholder="Digite aqui" required> <br><br>
+        <label for="pecas">Peças substituidas:</label> <input type="text" name="pecas" maxlength="80" placeholder="Digite aqui" required> <br><br>
+        <label for="valor">Valor cobrado:</label> <input type="number" name="valor" maxlength="12" placeholder="Digite aqui" required> <br><br>
+        <strong style="color: black;">Endereço do cliente: </strong> <br><br>
+        <label for="cidade">Cidade:</label> <input type="text" name="cidade" maxlength="20" placeholder="Digite aqui" required> <br><br>
+        <label for="bairro">Bairro:</label> <input type="text" name="bairro" maxlength="20" placeholder="Digite aqui" required> <br><br>
+        <label for="rua">Rua:</label> <input type="text" name="rua" maxlength="30" placeholder="Digite aqui" required> <br><br>
+        <label for="numero">Número:</label> <input type="number" name="numero" maxlength="12" placeholder="Digite aqui" required> <br><br>
+        <label for="comp">Complemento:</label> <input type="text" name="comp" maxlength="12" placeholder="Digite aqui" required> <br><br>
+        <a href="Index.html">
+        <input type="button" value="Voltar"></a>
+        <input type="submit" value="Salvar">
+    </form>
+</body>
+</html>
+
+---------------------------------------------------------------------------------------------------------------------------
+
+ShowReg
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Refritec Refrigeração</title>
+    <style type="text/css">
+        body {
+        background-image: url(logo.jpeg);
+        background-position-x: center;
+        background-position-y: center;
+        }
+    </style>
+</head>
+<body>
+    <form action="" method="post" id="formulario">
+        <h1 style="color: black;">Registros</h1>
+<?php 
+session_start();
+
+$altera = $_POST['altera'];
+$_SESSION['altera'] = $altera;
+
+$strcon = mysqli_connect('localhost', 'root', '', 'bdrefri') or die('Erro ao conectar ao banco de dados');
+
+$resul = mysqli_query($strcon, "SELECT MAX(cod_serv) as cod_serv FROM registros") or die("Erro na consulta");
+
+$row = $resul->fetch_assoc();
+$ultimocod = $row['cod_serv'];
+
+    if ($altera <= $ultimocod && $altera > 0) {
+        $strcon = mysqli_connect('localhost', 'root', '', 'bdrefri') or die('Erro ao conectar ao banco de dados');
+
+        $resul = mysqli_query($strcon, "SELECT * FROM registros WHERE cod_serv = $altera") or die("Erro ao transmitir dados");
+
+        while ($mostra = mysqli_fetch_array($resul))
+
+        echo "Nome do cliente: $mostra[nome_cliente]<br><br> Data do serviço:$mostra[data_serv]<br><br> Descrição do serviço: $mostra[desc_serv]<br><br> Peças substituidas: $mostra[pecas_sub]<br><br> Valor cobrado:$mostra[valor_cobrado]<br><br> Cidade:$mostra[cidade]<br><br> Bairro:$mostra[bairro]<br><br> Rua:$mostra[rua]<br><br> Número:$mostra[numero]<br><br> Complemento:$mostra[complemento]<br><br>";
+
+        echo "<a href='Index.html'><input type='button' value='Voltar ao menu'></a>";
+        echo "<a href='NewReg.html'><input type='button' value='Confirmar'></a>";
+    }
+    else {
+        echo "Código invalido! <br><br> Tente novamente!";
+        echo "<br><br><a href='Index.html'><input type='button' value='Voltar ao menu'></a>";
+        echo "<a href='Alterar.html'><input type='button' value='Tentar novamente'></a>";
+    }
+?>
+    
+</form>
+</body>
+</html>
+
+---------------------------------------------------------------------------------------------------------------------------
+
+style.css
+
+#formulario {
+    border-radius: 4ch;
+    border-width: 8px;
+    border-style: solid;
+    border-color: blue;
+    width: 45%;
+    padding: 2%;
+    text-align: center;
+    margin-top: 10%;
+    margin-left: 25%;
+    background-color: white;
+    color: blue;
+    
+}
+
+#versao {
+    text-align: right;
+}
+
+
+
+
+
